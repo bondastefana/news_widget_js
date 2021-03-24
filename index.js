@@ -1,4 +1,4 @@
-const baseUrl = 'http://www.mocky.io/v2/58fda6ce0f0000c40908b8c8'
+const baseUrl = 'https://www.mocky.io/v2/58fda6ce0f0000c40908b8c8'
 const newsContainer = document.getElementsByClassName('news')[0]
 const buttons = document.getElementsByClassName('button')[0]
 let counter = 180
