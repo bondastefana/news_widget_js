@@ -1,6 +1,8 @@
 const baseUrl = 'https://www.mocky.io/v2/58fda6ce0f0000c40908b8c8'
 const newsContainer = document.getElementsByClassName('news')[0]
 const buttons = document.getElementsByClassName('button')[0]
+const allButtons = document.getElementsByClassName('button')
+
 let counter = 180
 let counterPage = 15
 
@@ -63,33 +65,36 @@ const changePage = () => {
 }
 
 const goNextPage = goFirstPage => {
-  let allButtons = document.getElementsByClassName('button')
-
   if (goFirstPage) {
-    if (allButtons[0].classList.contains('button-active')) {
+    if (hasActiveClass(0)) {
       return
-    } else if (allButtons[1].classList.contains('button-active')) {
-      allButtons[1].classList.remove('button-active')
-      handleChangePage('page-1')
-    } else if (allButtons[2].classList.contains('button-active')) {
-      allButtons[2].classList.remove('button-active')
-      handleChangePage('page-1')
+    } else if (hasActiveClass(1)) {
+      removeActiveClass(1, 'page-1')
+    } else if (hasActiveClass(2)) {
+      removeActiveClass(2, 'page-1')
     }
   } else {
-    if (allButtons[0].classList.contains('button-active')) {
-      allButtons[0].classList.remove('button-active')
-      handleChangePage('page-2')
-    } else if (allButtons[1].classList.contains('button-active')) {
-      allButtons[1].classList.remove('button-active')
-      handleChangePage('page-3')
-    } else if (allButtons[2].classList.contains('button-active')) {
-      allButtons[2].classList.remove('button-active')
-      handleChangePage('page-1')
+    if (hasActiveClass(0)) {
+      removeActiveClass(0, 'page-2')
+    } else if (hasActiveClass(1)) {
+      removeActiveClass(1, 'page-3')
+    } else if (hasActiveClass(2)) {
+      removeActiveClass(2, 'page-1')
     }
   }
 }
 
+const hasActiveClass = elementIndex => {
+  return allButtons[elementIndex].classList.contains('button-active')
+}
+
+const removeActiveClass = (elementIndex, page) => {
+  allButtons[elementIndex].classList.remove('button-active')
+  handleChangePage(page)
+}
+
 const handleChangePage = pageNumber => {
+  counterPage = 15
   let newsList = document.getElementsByClassName('news-item')
   let buttonActive = document.getElementsByClassName(`button ${pageNumber}`)[0]
 
@@ -104,7 +109,6 @@ const handleChangePage = pageNumber => {
   } else if (isNotCurrentPage) {
     buttonActive.classList.add('button-active')
 
-    let allButtons = document.getElementsByClassName('button')
     for (let i = 0; i < allButtons.length; i++) {
       if (!allButtons[i].classList.contains(`${pageNumber}`)) {
         allButtons[i].classList.remove('button-active')
@@ -126,15 +130,18 @@ const handleChangePage = pageNumber => {
     if (isCurrentPageActive) {
       return
     } else if (isCurrentPageInactive) {
-      newsList[i].classList.remove('inactive')
-      newsList[i].classList.add('active')
+      switchClasses('inactive', 'active')
     }
 
     if (isNotCurrentPage) {
-      newsList[i].classList.remove('active')
-      newsList[i].classList.add('inactive')
+      switchClasses('active', 'inactive')
     }
   }
+}
+
+const switchClasses = (classToRemove, classToAdd) => {
+  newsList[i].classList.remove(classToRemove)
+  newsList[i].classList.add(classToAdd)
 }
 
 window.onload = function () {
